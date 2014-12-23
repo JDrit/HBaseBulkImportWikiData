@@ -52,5 +52,12 @@ public class Driver {
     FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
     job.waitForCompletion(true);
+
+    Runtime rt = Runtime.getRuntime();
+    rt.exec("hadoop fs -chmod -R 777 " + args[1]);
+
+    // Load generated HFiles into table
+    LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf);
+    loader.doBulkLoad(new Path(args[1]), hTable);
   }
 }
