@@ -1,7 +1,10 @@
 package edu.rit.csh.wikiData;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.FileUtil; 
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.permission.FsPermission;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.HTable;
@@ -53,11 +56,15 @@ public class Driver {
 
     job.waitForCompletion(true);
 
+    FileSystem fs = FileSystem.get(conf);
+    //fs.setPermission(new Path(args[1]), FsPermission.valueOf("drwxrwxrwx"));
     Runtime rt = Runtime.getRuntime();
     rt.exec("hadoop fs -chmod -R 777 " + args[1]);
 
     // Load generated HFiles into table
     LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf);
     loader.doBulkLoad(new Path(args[1]), hTable);
+
+    fs.delete(new Path(args[1]), true);
   }
 }
