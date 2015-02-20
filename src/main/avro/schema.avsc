@@ -1,0 +1,18 @@
+{
+    "type": "record",
+    "name": "LogRecord",
+    "fields": [ {
+        "name": "pageTitle",
+        "type": "string",
+        "doc" : "The title of the article"
+    }, {
+        "name": "timestamp",
+        "type": "long",
+        "doc" : "The hour in which the log data occured"
+    }, {
+        "name": "count",
+        "type": "int",
+        "doc" : "the number of views the article got"
+    } ],
+    "doc": "The record data for an article's view for a given hour"
+}
